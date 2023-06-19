@@ -14,27 +14,25 @@ function WebToLead()
       return;
   }
   var payloadData = {
-      contacts: {
-          name: inputs[0].value,
-          number: inputs[2].value,
-          email: inputs[1].value
-      },
-      quiz : {
-          name: link
-      },
-      ip: ip,
-      url: link
+      name: inputs[0].value,
+      phone: inputs[2].value,
+      email: inputs[1].value,
+      url_str: link,
+      ip: ip
   };
   
-  var url = 'https://qwertycrm.xyz/api/v1/ExternalLead/6487439ec0e5f7ad6';
+  var url = '/send.php';
 
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', url, true);
+  xhr.open('POST', url);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.setRequestHeader('Accept', 'application/json');
   xhr.onreadystatechange = function () {
       if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-         document.getElementsByClassName('btn_link')[0].click()
+         setTimeout(() => {
+            document.getElementsByClassName('btn_link')[0].click();
+         },
+         2000);
       }
   };
   xhr.onerror = function () {
@@ -42,3 +40,7 @@ function WebToLead()
   };
   xhr.send(JSON.stringify(payloadData));
 }
+
+document.querySelector('.btn_btn').addEventListener('click', (e) => {
+    WebToLead()
+});
