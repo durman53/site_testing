@@ -21,7 +21,7 @@ function WebToLead()
       ip: ip
   };
   
-  var url = 'https://durman53.github.io/site_testing/quiz/send.php';
+  var url = '/send.php';
   const response = fetch(url, {
             method: 'POST',
             body: JSON.stringify(payloadData),
