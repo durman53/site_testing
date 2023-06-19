@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>quiz</title>
+    <script src="main.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.1.6/css/intlTelInput.css"
+      integrity="sha512-Ky9SFgkYYIAWfFbsz+Tvrs+kpW7mgyQu+glUEnVV60+nxDPe64w0CrYRSMKsmTwJtN2jXNmU5SBgcyzKOwsn3w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #f7fcff;
+      }
+      img {
+        width: 100%;
+      }
+      #quiz-content {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .question .title {
+        color: #000000 !important;
+        background: #ffffff !important;
+        font-size: 24px !important;
+        font-family: "Montserrat", sans-serif !important;
+        font-weight: 600;
+      }
+      .white-box {
+        border-radius: 3px;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.05);
+      }
+      .progressing .bx {
+        padding: 40px;
+      }
+      .progressing .tt {
+        color: #000;
+        font-size: 18px;
+        font-weight: 400;
+        border-bottom: 1px solid #e8e8e8;
+      }
+      .quiz-progress-bar {
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .quiz-progress-bar .dots > div {
+        background-color: #d9e1ee;
+        width: 6px;
+        height: 6px;
+        display: inline-block;
+        margin-right: 10px;
+        vertical-align: middle;
+        border-radius: 50%;
+      }
+      .quiz-progress-bar .dots > div.act {
+        background-image: -moz-linear-gradient(
+          180deg,
+          rgb(15, 101, 239) 0%,
+          rgb(150, 10, 249) 100%
+        );
+        background-image: -webkit-linear-gradient(
+          180deg,
+          rgb(15, 101, 239) 0%,
+          rgb(150, 10, 249) 100%
+        );
+        background-image: -ms-linear-gradient(
+          180deg,
+          rgb(15, 101, 239) 0%,
+          rgb(150, 10, 249) 100%
+        );
+        width: 12px;
+        height: 12px;
+      }
+      input:checked + label::before {
+        background-color: #1065ef;
+      }
+      .quiz-progress-bar .dots > div.been {
+        background-color: #1065ef;
+      }
+      .quiz-progress-bar .count {
+        color: #000;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .progressing .image {
+        text-align: center;
+      }
+      .autor_print_wrapper {
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .question .answers-block {
+        font-size: 15px !important;
+        height: 100%;
+      }
+      .answers {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .answers-container + .bx,
+      .answers + .bx {
+        padding: 20px 15px;
+      }
+      .ch-box {
+        overflow: hidden;
+        margin-bottom: 10px;
+      }
+      label {
+        position: relative;
+        padding-left: 50px;
+      }
+      label::before {
+        content: "";
+        position: absolute;
+        border: 2px solid #dfe6ea;
+        width: 25px;
+        height: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 10px;
+        border-radius: 5px;
+      }
+      .ch-box label {
+        display: inline-block;
+        width: 100%;
+        vertical-align: middle;
+        font-size: 15px;
+        font-weight: 600;
+        color: #000;
+        cursor: pointer;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        transition: all 0.3s;
+      }
+      .ch-box label:hover {
+        color: #fff;
+        background-color: #1065ef;
+      }
+      .quiz_process_agree {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 30px;
+      }
+      .quiz_process_agree__left {
+        margin-right: 9px;
+        color: #813434;
+      }
+      .quiz_process_agree .quiz_process_agree__item1 {
+        width: 48px;
+        height: 48px;
+        border-radius: 24px;
+        border: 3px solid #813434;
+      }
+      .quiz_process_agree .quiz_process_agree__item2 {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        border: 3px solid #813434;
+        position: relative;
+      }
+      .quiz_process_agree .quiz_process_agree__item3 {
+        width: 32px;
+        height: 32px;
+        border-radius: 16px;
+        border: 3px solid #b9b9b9;
+        position: relative;
+      }
+      .quiz_process_agree .quiz_process_agree__item4 {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        border: 3px solid #44b172;
+        position: relative;
+      }
+      .quiz_process_agree .quiz_process_agree__item5 {
+        width: 48px;
+        height: 48px;
+        border-radius: 24px;
+        border: 3px solid #44b172;
+      }
+      .quiz_process_agree__right {
+        margin-left: 9px;
+        color: #44b172;
+      }
+      .question.quiz_type_1 {
+        /* display: none; */
+      }
+      #question0 {
+        display: block;
+      }
+
+      #question6 label {
+        padding: 0;
+      }
+      #question6 label::before {
+        display: none;
+      }
+      #question6 input {
+        display: none;
+      }
+
+      .quiz_process_agree__item {
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+      .row.answers-image-4 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .col-6.block-vertical-margin.yes_text {
+        flex-basis: calc(50% - 10px);
+      }
+      .img {
+        height: 280px;
+        object-fit: cover;
+        object-position: 50% 50%;
+        width: 100%;
+        display: block;
+      }
+      .quiz_process_emoji {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 30px;
+      }
+      .quiz_process_emoji__item {
+        cursor: pointer;
+        padding-left: 0;
+      }
+      .answers-container {
+        margin-top: 30px;
+      }
+      .quiz_process_emoji label::before {
+        display: none;
+      }
+      #question12 .answers-container {
+        background-color: #fff;
+        padding: 30px 0;
+        box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+      }
+      .answers_form {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .answers_form input {
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+      }
+      .btn {
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 16px;
+        border: none;
+        background-color: #1065ef;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        max-width: 320px;
+        margin-left: auto;
+        width: 100%;
+        margin-right: auto;
+        font-family: "Montserrat", sans-serif;
+      }
+      .btn:hover {
+        opacity: 0.85;
+      }
+      #phone {
+        width: 100%;
+      }
+      .iti-mobile .iti--container {
+        max-width: 620px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      #startLabel::before {
+        display: none;
+      }
+      #startLabel {
+        background-color: #1065ef;
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 10px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        max-width: 200px;
+        cursor: pointer;
+      }
+
+      @media (max-width: 767px) {
+        .col-6.block-vertical-margin.yes_text {
+          flex-basis: 100%;
+        }
+        .quiz-progress-bar {
+          flex-direction: column;
+        }
+        .progressing .bx {
+          padding: 20px;
+        }
+        .progressing .image {
+          margin-top: 0;
+        }
+        .quiz_process_agree {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <form id="quiz-content">
+      <div
+        id="process_container"
+        data-pjax-container=""
+        data-pjax-push-state=""
+        data-pjax-timeout="1000"
+      >
+        <div
+          class="question quiz_type_1"
+          id="start"
+          data-id="41640"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Тест: Почему деньги обходят тебя стороной?
+              </div>
+            </div>
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/5GoP0PCwbQjCA0qoIcgbi6awFUnWrUWo.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers">
+              <p style="padding: 0 15px">
+                Как так получается, что одних людей деньги любят, а у тебя с
+                ними никак не складываются отношения? Ты мечтаешь разбогатеть,
+                заработать свой первый миллион или просто накопить на что-то?
+                Для всего этого нужны внимание и счет. Согласны, счастье не
+                деньгах, но без них живется скучновато. Поэтому проходи этот
+                тест, после него ты поймешь, как стать денежным магнитом!
+              </p>
+              <div data-answer-type="1" data-questionnum="0" data-optionid="4">
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="start"
+                  value="value1"
+                  style="display: none"
+                />
+                <label id="startLabel" for="start">Начать</label>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-0"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+        <div
+          class="question quiz_type_1"
+          id="question0"
+          data-id="41640"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Выбери фразу, которая лучше всего описывает твои отношения с
+                деньгами:
+              </div>
+            </div>
+
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/CTSeuDi-EmbRKJIK4kLyVd0k0po4KJh5.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers">
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-0 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="0"
+                data-optionid="1"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-0-answer-1"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-0-answer-1"
+                  >Деньги – очень полезная штука. Они позволяют не делать того,
+                  чего ты не любишь</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-0 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="0"
+                data-optionid="2"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-0-answer-2"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-0-answer-2"
+                  >Деньги не имеют значения – пока они у вас есть</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-0 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="0"
+                data-optionid="3"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-0-answer-3"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-0-answer-3"
+                  >Человек может долго жить на деньги, которых ждет</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-0 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="0"
+                data-optionid="4"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-0-answer-4"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-0-answer-4"
+                  >Денег не хватает даже на то, чтобы понять, что не в них
+                  счастье</label
+                >
+              </div>
+            </div>
+            <div class="bx">
+              <div class="quiz-progress-bar">
+                <div class="dots">
+                  <!-- <pre>1</pre>
+              <pre>1</pre> -->
+                  <div class="dot act"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="count">1 / 12</div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-0"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+        <div
+          class="question quiz_type_1"
+          id="question1"
+          data-id="41641"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Знаешь ли ты свои расходы за прошлую неделю?
+              </div>
+            </div>
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/8As8x11-IpGmvaNot4HvvO5i-kNqOzvn.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers">
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-1 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="1"
+                data-optionid="1"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-1-answer-1"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-1-answer-1">Без понятия</label>
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-1 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="1"
+                data-optionid="2"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-1-answer-2"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-1-answer-2"
+                  >Примерно представляю</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-1 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="1"
+                data-optionid="3"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-1-answer-3"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-1-answer-3"
+                  >Конечно, у меня все подсчеты в голове. Иначе вообще не
+                  выжить</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-1 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="1"
+                data-optionid="4"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-1-answer-4"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-1-answer-4"
+                  >Да, стараюсь равномерно распределять доход в течение
+                  месяца</label
+                >
+              </div>
+            </div>
+            <div class="bx">
+              <div class="quiz-progress-bar">
+                <div class="dots">
+                  <!-- <pre>1</pre>
+              <pre>1</pre> -->
+                  <div class="dot been"></div>
+                  <div class="dot act"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="count">2 / 12</div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-1"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question2"
+          data-id="41642"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Что ты будешь делать, если однажды проснешься с мыслью, что тебя
+                не устраивает твоя зарплата?
+              </div>
+            </div>
+
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/UjzmwxnK0sU6Q4r1d8WhvXunuhzaxumm.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers">
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-2 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="2"
+                data-optionid="1"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-2-answer-1"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-2-answer-1"
+                  >Да я с этой мыслью живу</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-2 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="2"
+                data-optionid="2"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-2-answer-2"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-2-answer-2"
+                  >Ну может наконец решусь сменить работу</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-2 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="2"
+                data-optionid="3"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-2-answer-3"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-2-answer-3"
+                  >Попробую тратить меньше</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-2 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="2"
+                data-optionid="4"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-2-answer-4"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-2-answer-4"
+                  >Да не знаю, вроде всегда все устраивало. Более менее</label
+                >
+              </div>
+            </div>
+            <div class="bx">
+              <div class="quiz-progress-bar">
+                <div class="dots">
+                  <!-- <pre>1</pre>
+              <pre>1</pre> -->
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot act"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="count">3 / 12</div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-2"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question3"
+          data-id="41643"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Тебе наконец-то удалось накопить первый миллион. На что его
+                потратишь?
+              </div>
+            </div>
+
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/WpUsnHZkVlHpYfsBWXqmclDs8cj5hPbI.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers">
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-3 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="3"
+                data-optionid="1"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-3-answer-1"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-3-answer-1"
+                  >Куплю все, о чем давно мечтаю</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-3 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="3"
+                data-optionid="2"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-3-answer-2"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-3-answer-2"
+                  >Уволюсь и буду жить в свое удовольствие</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-3 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="3"
+                data-optionid="3"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-3-answer-3"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-3-answer-3"
+                  >Не знаю, пока никаких планов у меня нет</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-3 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="3"
+                data-optionid="4"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-3-answer-4"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-3-answer-4"
+                  >Уволюсь и найду дело по душе</label
+                >
+              </div>
+            </div>
+            <div class="bx">
+              <div class="quiz-progress-bar">
+                <div class="dots">
+                  <!-- <pre>1</pre>
+              <pre>1</pre> -->
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot act"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="count">4 / 12</div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-3"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question4"
+          data-id="41644"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Что ты обычно делаешь, когда денег не хватает?
+              </div>
+            </div>
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/rqxmY4wDxeEEO7HW0e5Kj_lr8OPVol8-.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers">
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-4 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="4"
+                data-optionid="1"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-4-answer-1"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-4-answer-1"
+                  >Проклинаю всех и вся</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-4 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="4"
+                data-optionid="2"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-4-answer-2"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-4-answer-2"
+                  >Ищу еще одну дурацкую работу</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-4 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="4"
+                data-optionid="3"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-4-answer-3"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-4-answer-3">Занимаю у друзей</label>
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-4 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="4"
+                data-optionid="4"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-4-answer-4"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-4-answer-4"
+                  >Разве бывает такое, чтобы их хватало?</label
+                >
+              </div>
+            </div>
+            <div class="bx">
+              <div class="quiz-progress-bar">
+                <div class="dots">
+                  <!-- <pre>1</pre>
+              <pre>1</pre> -->
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot act"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="count">5 / 12</div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-4"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question5"
+          data-id="41645"
+          data-type="2"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                У твоего коллеги завтра день рождения. Что ты ему подаришь?
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="row answers-image-4">
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-5 choose-answer"
+                  data-questionnum="5"
+                  data-optionid="1"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/Bhjz9hcSMtfvLaX8AVXaHEZ0wyDpzndG.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-5-answer-1"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-5-answer-1"
+                      >Порадую человека чем-нибудь классным</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-5 choose-answer"
+                  data-questionnum="5"
+                  data-optionid="2"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/8qaRxEXq6pfACshNBCA5LhnajCXS46-I.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-5-answer-2"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-5-answer-2">На месте решу</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-5 choose-answer"
+                  data-questionnum="5"
+                  data-optionid="3"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/T8j_mJCRptrMywq6aC8KPHeH2AtC77LT.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-5-answer-3"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-5-answer-3"
+                      >Коллега? Нет уж, обойдется без моего подарка</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-5 choose-answer"
+                  data-questionnum="5"
+                  data-optionid="4"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/TuwzmBiq-LS4mJOynAXDGNwU8WEi-F7B.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-5-answer-4"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-5-answer-4"
+                      >Просто поздравлю и пожелаю всего-всего</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bx">
+            <div class="quiz-progress-bar">
+              <div class="dots">
+                <!-- <pre>1</pre>
+            <pre>1</pre> -->
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot act"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              <div class="count">6 / 12</div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-5"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question6"
+          data-id="41646"
+          data-type="7"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Обязательно нужно откладывать сбережения на "черный день". Это
+                так?
+              </div>
+            </div>
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/mQM9Me-971sWBdKW5lIn3u12GhzGGqMB.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="quiz_process_agree">
+              <div class="quiz_process_agree__title quiz_process_agree__left">
+                Не согласен(-на)
+              </div>
+              <label
+                class="quiz_process_agree__item quiz_process_agree__item1 choose-answer"
+                for="input-question-7-answer-1"
+              >
+                <input type="text" id="input-question-7-answer-1" />
+              </label>
+              <label
+                class="quiz_process_agree__item quiz_process_agree__item2 choose-answer"
+                for="input-question-7-answer-2"
+              >
+                <input type="text" id="input-question-7-answer-2" />
+              </label>
+              <label
+                class="quiz_process_agree__item quiz_process_agree__item3 choose-answer"
+                for="input-question-7-answer-3"
+              >
+                <input type="text" id="input-question-7-answer-3" />
+              </label>
+              <label
+                class="quiz_process_agree__item quiz_process_agree__item4 choose-answer"
+                for="input-question-7-answer-4"
+              >
+                <input type="text" id="input-question-7-answer-4" />
+              </label>
+              <label
+                class="quiz_process_agree__item quiz_process_agree__item5 choose-answer"
+                for="input-question-7-answer-5"
+              >
+                <input type="text" id="input-question-7-answer-5" />
+              </label>
+
+              <div class="quiz_process_agree__title quiz_process_agree__right">
+                Согласен(-на)
+              </div>
+            </div>
+          </div>
+
+          <div class="bx">
+            <div class="quiz-progress-bar">
+              <div class="dots">
+                <!-- <pre>1</pre>
+            <pre>1</pre> -->
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot act"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              <div class="count">7 / 12</div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-6"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question7"
+          data-id="41647"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                А почему бы не открыть свой бизнес или начать свое дело?
+              </div>
+            </div>
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/7N--hdN15MSChPajx-iXosDYvUAGovCo.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers">
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-7 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="7"
+                data-optionid="1"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-8-answer-1"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-8-answer-1"
+                  >Да это же так сложно, вы что?!</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-8 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="7"
+                data-optionid="2"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-8-answer-2"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-8-answer-2">А зачем?</label>
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-8 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="7"
+                data-optionid="3"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-8-answer-3"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-8-answer-3"
+                  >Ооо, я не потяну. Это слишком дорого</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-7 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="7"
+                data-optionid="4"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-8-answer-4"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-8-answer-4"
+                  >Не знаю, не могу решиться бросить свою скучную, но стабильную
+                  работу</label
+                >
+              </div>
+              <div class="bx">
+                <div class="quiz-progress-bar">
+                  <div class="dots">
+                    <!-- <pre>1</pre>
+                <pre>1</pre> -->
+                    <div class="dot been"></div>
+                    <div class="dot been"></div>
+                    <div class="dot been"></div>
+                    <div class="dot been"></div>
+                    <div class="dot been"></div>
+                    <div class="dot been"></div>
+                    <div class="dot been"></div>
+                    <div class="dot act"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                  </div>
+                  <div class="count">8 / 12</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-7"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question8"
+          data-id="41648"
+          data-type="2"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Если ты будешь брать кредит, на что ты обратишь внимание в
+                первую очередь?
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="row answers-image-4">
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-8 choose-answer"
+                  data-questionnum="8"
+                  data-optionid="1"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/1B_PkD3yssWhgbwXNcqd3WKHKvcE88eo.png"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-8-answer-1"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-8-answer-1">Дают - бери!</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-8 choose-answer"
+                  data-questionnum="8"
+                  data-optionid="2"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/xczDwoL3BThK6u54o3bu2q3I2zPW6T0y.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-8-answer-2"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-8-answer-2"
+                      >На ежемесячный платеж, так как у меня фиксированный
+                      доход, он не может стать больше</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-8 choose-answer"
+                  data-questionnum="8"
+                  data-optionid="3"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/1TbkcqTeeSZdCNJMmvRvItK1E6HzUy3a.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-8-answer-3"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-8-answer-3"
+                      >На максимальную сумму кредита. Играть нужно
+                      по-крупному!</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-8 choose-answer"
+                  data-questionnum="8"
+                  data-optionid="4"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/G8BNGF9XI_mylSRh0_Ez0ZIsCejzPaHg.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-8-answer-4"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-8-answer-4"
+                      >"Спасибо" моей офисной работе, я хорошо разбираюсь в
+                      бумажках. Поэтому читаю все от и до</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bx">
+            <div class="quiz-progress-bar">
+              <div class="dots">
+                <!-- <pre>1</pre>
+            <pre>1</pre> -->
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot act"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              <div class="count">9 / 12</div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-8"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question9"
+          data-id="41649"
+          data-type="5"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">Как ты относишься к благотворительности?</div>
+            </div>
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/l4Xc_xUqttsSBd5Cyh1hCi3ZQJu09BzS.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="quiz_process_emoji">
+              <label
+                class="quiz_process_emoji__item quiz_process_emoji__item1 choose-answer"
+                data-answer-type="5"
+                data-questionnum="9"
+                data-optionid="1"
+                for="input-question-10-answer-1"
+              >
+                <img loading="lazy" src="img/emoji1.svg" alt="" />
+              </label>
+              <input
+                style="display: none"
+                type="checkbox"
+                id="input-question-10-answer-1"
+              />
+              <label
+                class="quiz_process_emoji__item quiz_process_emoji__item2 choose-answer"
+                data-answer-type="5"
+                data-questionnum="9"
+                data-optionid="1"
+                for="input-question-10-answer-2"
+              >
+                <img loading="lazy" src="img/emoji2.svg" alt="" />
+              </label>
+              <input
+                style="display: none"
+                type="checkbox"
+                id="input-question-10-answer-2"
+              />
+              <label
+                class="quiz_process_emoji__item quiz_process_emoji__item3 choose-answer"
+                data-answer-type="5"
+                data-questionnum="9"
+                data-optionid="1"
+                for="input-question-10-answer-3"
+              >
+                <img loading="lazy" src="img/emoji3.svg" alt="" />
+              </label>
+              <input
+                style="display: none"
+                type="checkbox"
+                id="input-question-10-answer-3"
+              />
+              <label
+                class="quiz_process_emoji__item quiz_process_emoji__item4 choose-answer"
+                data-answer-type="5"
+                data-questionnum="9"
+                data-optionid="1"
+                for="input-question-10-answer-4"
+              >
+                <img loading="lazy" src="img/emoji4.svg" alt="" />
+              </label>
+              <input
+                style="display: none"
+                type="checkbox"
+                id="input-question-10-answer-4"
+              />
+              <label
+                class="quiz_process_emoji__item quiz_process_emoji__item5 choose-answer"
+                data-answer-type="5"
+                data-questionnum="9"
+                data-optionid="1"
+                for="input-question-10-answer-5"
+              >
+                <img loading="lazy" src="img/emoji5.svg" alt="" />
+              </label>
+              <input
+                style="display: none"
+                type="checkbox"
+                id="input-question-10-answer-5"
+              />
+            </div>
+          </div>
+          <div class="bx">
+            <div class="quiz-progress-bar">
+              <div class="dots">
+                <!-- <pre>1</pre>
+            <pre>1</pre> -->
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot act"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              <div class="count">10 / 12</div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-9"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question10"
+          data-id="41650"
+          data-type="2"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Как тебе кажется, чего тебе не хватает, чтобы разбогатеть?
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="row answers-image-4">
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-10 choose-answer"
+                  data-questionnum="10"
+                  data-optionid="1"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/WB3I9Wa2PPY3MwbyRBN0C2kgk1CXUqA4.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-10-answer-1"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-10-answer-1">Смелости</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-10 choose-answer"
+                  data-questionnum="10"
+                  data-optionid="2"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/i7Iqh5TrPREAsfuikHtsAVY3nvkg09ub.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-10-answer-2"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-10-answer-2">Трудолюбия</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-10 choose-answer"
+                  data-questionnum="10"
+                  data-optionid="3"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/ZTlbmWCBcjNZg0xUFBS3dkMhkaslTHea.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-10-answer-3"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-10-answer-3"
+                      >Внимательности</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 block-vertical-margin yes_text">
+                <div
+                  class="white-box ans-fr answers-block checkbox-answer answer-unsel lock-question-10 choose-answer"
+                  data-questionnum="10"
+                  data-optionid="4"
+                >
+                  <div class="autor_print_wrapper autor_print_wrapper_quiz">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      src="img/sxksi1WvfmUdD3XloOAiT1z9eP9pb8dN.jpg"
+                    />
+                  </div>
+                  <div class="ch-box">
+                    <div class="jcf-class-green-ch chk-area chk-unchecked">
+                      <span></span>
+                    </div>
+                    <input
+                      class="green-ch"
+                      type="checkbox"
+                      id="input-question-10-answer-4"
+                      value="value1"
+                      name="t1"
+                      style="display: none"
+                    />
+                    <label for="input-question-10-answer-4"
+                      >Сосредоточенности</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bx">
+            <div class="quiz-progress-bar">
+              <div class="dots">
+                <!-- <pre>1</pre>
+            <pre>1</pre> -->
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot been"></div>
+                <div class="dot act"></div>
+                <div class="dot"></div>
+              </div>
+              <div class="count">11 / 12</div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-10"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question11"
+          data-id="41651"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">"Дожить до зарплаты" - это про тебя?</div>
+            </div>
+            <div class="bx">
+              <div class="image autor_print_wrapper">
+                <img
+                  loading="lazy"
+                  src="img/5pVZ5pJ2HM5A4hyU_TA85Tx1XWqFMD-g.gif"
+                  alt=""
+                  style="display: inline"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers">
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-11 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="11"
+                data-optionid="1"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-11-answer-1"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-11-answer-1"
+                  >Да у меня весь месяц - выживание</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-11 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="11"
+                data-optionid="2"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-11-answer-2"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-11-answer-2"
+                  >Нет, в случае чего, найду какую-нибудь подработку</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-11 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="11"
+                data-optionid="3"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-11-answer-3"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-11-answer-3"
+                  >Да, никак не могу распределить бюджет</label
+                >
+              </div>
+              <div
+                class="ch-box white-box answers-block checkbox-answer answer-unsel block-question-11 choose-answer block-vertical-margin-mini"
+                data-answer-type="1"
+                data-questionnum="11"
+                data-optionid="4"
+              >
+                <div class="jcf-class-green-ch chk-area chk-unchecked">
+                  <span></span>
+                </div>
+                <input
+                  type="checkbox"
+                  class="green-ch"
+                  id="input-question-11-answer-4"
+                  value="value1"
+                  style="display: none"
+                />
+                <label for="input-question-11-answer-4"
+                  >Да нет, что есть деньги, что нет - все равно мало</label
+                >
+              </div>
+            </div>
+            <div class="bx">
+              <div class="quiz-progress-bar">
+                <div class="dots">
+                  <!-- <pre>1</pre>
+              <pre>1</pre> -->
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot been"></div>
+                  <div class="dot act"></div>
+                </div>
+                <div class="count">12 / 12</div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+              min-width: 300px;
+              max-width: 100%;
+            "
+          ></div>
+
+          <div
+            id="question-result-11"
+            class="block-result-img"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div
+          class="question quiz_type_1"
+          id="question12"
+          data-id="41651"
+          data-type="1"
+          data-finished="0"
+        >
+          <div class="white-box progressing">
+            <div class="bx tt" style="">
+              <div class="title">
+                Оставьте свои контакты куда выслать результаты
+              </div>
+            </div>
+          </div>
+
+          <div class="answers-container">
+            <div class="answers answers_form answers_form_last">
+              <input
+                type="text"
+                class="green-ch"
+                name="name"
+                placeholder="Имя"
+                required
+              />
+              <input
+                type="email"
+                class="green-ch"
+                name="email"
+                placeholder="email"
+                required
+              />
+              <input
+                type="tel"
+                class="green-ch"
+                name="phone"
+                pattern="[0-9]{9,}"
+                placeholder="Телефон"
+                id="phone"
+                required
+              />
+              <button type="button" class="btn btn_btn" OnClick="WebToLead()">Отправить</button>
+              <a href="thanks.html" class="btn btn_link" style="display: none"
+                ></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.1.6/js/intlTelInput.min.js"
+      integrity="sha512-TJcZiZrZVz21UAAVhWdDyVWIBVa7mGSWk3jrmrq/laOjpoi+bSsCSN51WG5YKwGp4ZmOhlg5PZZKzR9hReehiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      const hideAndShowQuestions = (hideId, showId) => {
+        hideQuestion(hideId);
+        const showElement = document.querySelector(`#${showId}`);
+        showElement.style.display = "block";
+        showElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+
+      const hideQuestion = (questionId) => {
+        document.querySelector(`#${questionId}`).style.display = "none";
+      };
+
+      const addClickEventToLabels = (questionId, nextQuestionId) => {
+        const labels = document.querySelectorAll(`#${questionId} label`);
+        labels.forEach((label) => {
+          label.addEventListener("click", () =>
+            hideAndShowQuestions(questionId, nextQuestionId)
+          );
+        });
+      };
+
+      const questionIds = [
+        "start",
+        "question0",
+        "question1",
+        "question2",
+        "question3",
+        "question4",
+        "question5",
+        "question6",
+        "question7",
+        "question8",
+        "question9",
+        "question10",
+        "question11",
+        "question12",
+      ];
+
+      questionIds.forEach((questionId, index) => {
+        if (index === 0) {
+          return;
+        }
+        hideQuestion(questionId);
+        addClickEventToLabels(questionIds[index - 1], questionId);
+      });
+
+      const elements = document.querySelectorAll(".quiz_process_agree__item");
+      elements.forEach((element) => {
+        element.addEventListener("mouseenter", () => {
+          const borderColor = window
+            .getComputedStyle(element)
+            .getPropertyValue("border-color");
+          element.style.backgroundColor = borderColor;
+        });
+
+        element.addEventListener("mouseleave", () => {
+          element.style.backgroundColor = "transparent";
+        });
+      });
+
+      const input = document.querySelector("#phone");
+      let iti = window.intlTelInput(input, {
+        onlyCountries: [
+          "al",
+          "ad",
+          "at",
+          "by",
+          "be",
+          "ba",
+          "bg",
+          "hr",
+          "cz",
+          "dk",
+          "ee",
+          "fo",
+          "fi",
+          "fr",
+          "de",
+          "gi",
+          "gr",
+          "va",
+          "hu",
+          "is",
+          "ie",
+          "it",
+          "lv",
+          "li",
+          "lt",
+          "lu",
+          "mk",
+          "mt",
+          "md",
+          "mc",
+          "me",
+          "nl",
+          "no",
+          "pl",
+          "pt",
+          "ro",
+          "ru",
+          "sm",
+          "rs",
+          "sk",
+          "si",
+          "es",
+          "se",
+          "ch",
+          "ua",
+          "gb",
+        ],
+        initialCountry: "auto",
+        geoIpLookup: (callback) => {
+          fetch("https://ipapi.co/json")
+            .then((res) => res.json())
+            .then((data) => callback(data.country_code))
+            .catch(() => callback("us"));
+        },
+        utilsScript: "/intl-tel-input/js/utils.js?1684676252775", // just for formatting/placeholders etc
+      });
+
+      // Обработчик события, вызываемый при изменении выбранной страны
+      function handleCountryChange() {
+        var selectedCountryData = iti.getSelectedCountryData();
+        var countryPhoneCode = selectedCountryData.dialCode;
+
+        // Подставляем код страны в инпут
+        phone.value = countryPhoneCode;
+      }
+
+      // Назначаем обработчик события на изменение выбранной страны
+      phone.addEventListener("countrychange", handleCountryChange);
+
+      const inputs = document.querySelectorAll(".answers_form_last input");
+      const isInputValid = () => {
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i].value.length < 3) {
+            return false;
+          }
+        }
+        return true;
+      };
+      if (inputs.length === 3) {
+        inputs.forEach((input) => {
+          input.addEventListener("input", () => {
+            if (isInputValid()) {
+              // Your code here
+              //document.querySelector(".btn_btn").style.display = "none";
+              //document.querySelector(".btn_link").style.display = "block";
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 54" width="54" height="54">
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="M-390 -2021L1530 -2021L1530 2239L-390 2239Z" />
+		</clipPath>
+		<image width="512" height="512" id="img1" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS4yNSAwIDAgLTEuMjUgMCA0NSkiPgoJPGc+CgkJPGc+CgkJCTxwYXRoIHN0eWxlPSJmaWxsOiNGRkNDNEQ7IiBkPSJNNDA5LjYtMTY4LjhjMC0xMTMuMTA2LTkxLjY5NC0yMDQuOC0yMDQuOC0yMDQuOEM5MS43MDUtMzczLjYsMC0yODEuOTA2LDAtMTY4LjggICAgIEMwLTU1LjcwNSw5MS43MDUsMzYsMjA0LjgsMzZDMzE3LjkwNiwzNiw0MDkuNi01NS43MDUsNDA5LjYtMTY4LjgiLz4KCQkJPHBhdGggaWQ9IlNWR0NsZWFuZXJJZF8wIiBzdHlsZT0iZmlsbDojNjY0NTAwOyIgZD0iTTE1OS4yODktMTUxLjczM2MwLTIyLjAwNS0xMi43MzItMzkuODIyLTI4LjQ0NC0zOS44MjIgICAgIFMxMDIuNC0xNzMuNzM4LDEwMi40LTE1MS43MzNjMCwyMS45OTMsMTIuNzMyLDM5LjgyMiwyOC40NDQsMzkuODIyUzE1OS4yODktMTI5Ljc0LDE1OS4yODktMTUxLjczMyIvPgoJCQk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMykiPgoJCQkJPHBhdGggaWQ9IlNWR0NsZWFuZXJJZF8wXzFfIiBzdHlsZT0iZmlsbDojNjY0NTAwOyIgZD0iTTMwNy4yLTE1MS43MzNjMC0yMi4wMDUtMTIuNzMyLTM5LjgyMi0yOC40NDQtMzkuODIyICAgICAgcy0yOC40NDQsMTcuODE4LTI4LjQ0NCwzOS44MjJjMCwyMS45OTMsMTIuNzMyLDM5LjgyMiwyOC40NDQsMzkuODIyUzMwNy4yLTEyOS43NCwzMDcuMi0xNTEuNzMzIi8+CgkJCTwvZz4KCQkJPHBhdGggc3R5bGU9ImZpbGw6IzY2NDUwMDsiIGQ9Ik0xMzYuNTMzLTI4Mi41NzhjMjIuNzU2LDU2Ljg4OSwxNDcuOTExLDU2Ljg4OSwxNDcuOTExLDM0LjEzMyAgICAgQzI4NC40NDQtMjU5LjgyMiwxOTMuNDIyLTIzNy4wNjcsMTM2LjUzMy0yODIuNTc4Ii8+CgkJPC9nPgoJPC9nPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo="/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+	</style>
+	<g id="Задачи 3-7" clip-path="url(#cp1)">
+		<g id="Content">
+			<g id="2">
+				<g id="stroke">
+					<use id="077-sad-1" href="#img1" transform="matrix(0.103,0,0,0.103,0.269,0.352)"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
